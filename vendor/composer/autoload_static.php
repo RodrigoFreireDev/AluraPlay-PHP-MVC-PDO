@@ -6,6 +6,20 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit889896d1c62dbfd67d000308a063b39e
 {
+    public static $prefixLengthsPsr4 = array (
+        'A' => 
+        array (
+            'Alura\\Mvc\\' => 10,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Alura\\Mvc\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
@@ -13,6 +27,8 @@ class ComposerStaticInit889896d1c62dbfd67d000308a063b39e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit889896d1c62dbfd67d000308a063b39e::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit889896d1c62dbfd67d000308a063b39e::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit889896d1c62dbfd67d000308a063b39e::$classMap;
 
         }, null, ClassLoader::class);

@@ -5,6 +5,10 @@
 // $title = $_POST['titulo'];
 // OU
 // Acesso com filtro
+
+use Alura\Mvc\Entity\Video;
+use Alura\Mvc\Repository\VideoRepository;
+
 $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
 $title = filter_input(INPUT_POST, 'titulo');
 // Observações:
@@ -17,12 +21,10 @@ if ($url === false || $title === false) {
     exit();
 }
 
-$sql = "INSERT INTO videos (url, title) VALUES (?, ?);";
-$stmt = $pdo->prepare($sql);
-$stmt->bindValue(1, $url);
-$stmt->bindValue(2, $title);
+$repository = new VideoRepository($pdo);
+// $repository->addVideo(new Video($url, $title));
 
-if ($stmt->execute() === false) {
+if ($repository->addVideo(new Video($url, $title))=== false) {
     header('location: /?sucesso=0');
     exit();
 } else {
