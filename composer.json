@@ -1,6 +1,6 @@
 {
     "autoload": {
-        "PSR-4": {
+        "psr-4": {
             "Alura\\Mvc\\": "src/"
         }
     }

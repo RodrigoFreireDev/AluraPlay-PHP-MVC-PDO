@@ -1,10 +1,10 @@
 <?php
 
-$sql = 'DELETE FROM videos WHERE id = ?;';
-$stmt = $pdo->prepare($sql);
-$stmt->bindValue(1, $_GET['id'], PDO::PARAM_INT);
+use Alura\Mvc\Repository\VideoRepository;
 
-if ($stmt->execute() === false) {
+$repository = new VideoRepository($pdo);
+
+if ($repository->removeVideo($_GET['id']) === false) {
     header('Location: /?sucesso=0');
     exit;
 } else {
