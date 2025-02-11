@@ -20,7 +20,7 @@ if (isset($id)) {
     <main class="container">
 
         <form class="container__formulario" action="<?= $action ?>" method="post">
-            <h2 class="formulario__titulo">Envie um vídeo!</h2>
+            <h2 class="formulario__titulo">Envie um vídeo!(Obsoleto)</h2>
                 <div class="formulario__campo">
                     <label class="campo__etiqueta" for="url">Link embed</label>
                     <input

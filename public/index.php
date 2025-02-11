@@ -3,34 +3,86 @@
 // Vantagem do 'Front Contoller': Com ele, só precisamos usar o autoloader uma vez. No caso nesse arquivo.
 declare(strict_types=1);
 
-require __DIR__.'/../src/conexao.php';
-require __DIR__.'/../vendor/autoload.php';
+use Alura\Mvc\Controller\{
+    Controller,
+    EditVideoController,
+    VideoFormController,
+    NewVideoController,
+    Error404Controller,
+    DeleteVideoController,
+    VideoListController,
+};
+use Alura\Mvc\Repository\VideoRepository;
 
-if (!array_key_exists('PATH_INFO', $_SERVER) || $_SERVER['PATH_INFO'] === '/') {
-    require_once __DIR__.'/../listagem-videos.php';
-} elseif ($_SERVER['PATH_INFO'] === '/novo-video') {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        require_once 'pages/formulario.php';
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        require_once __DIR__.'/../novo-video.php';
-    }
-} elseif ($_SERVER['PATH_INFO'] === '/edita-video') {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        require_once 'pages/formulario.php';
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        require_once __DIR__.'/../edita-video.php';
-    }
-} elseif ($_SERVER['PATH_INFO'] === '/remover-video') {
-    require_once __DIR__.'/../remover-video.php';
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../src/conexao.php';
+
+$repository = new VideoRepository($pdo);
+
+// Depois de termos o arquivo routes.php:
+$routes = require_once __DIR__ . '/../config/routes.php';
+
+$pathInfo = $_SERVER['PATH_INFO'] ?? '/';
+$httpMethod = $_SERVER['REQUEST_METHOD'];
+
+$key = "$httpMethod|$pathInfo";
+
+if (array_key_exists($key, $routes)) {
+    $controllerClass = $routes["$httpMethod|$pathInfo"];
+
+    // Como foi possível instanciar um objeto de uma classe('$controller = new $controllerClass($repository);') a partir de uma string com o nome dessa classe?
+        // Instanciando diretamente pelo valor da variável!
+            // Sobre:
+            // O PHP permite que nós utilizemos uma variável como o nome da classe que queremos instanciar, como new $nomeDaClasse();. Isso facilitou nossa vida fazendo com que o conhecimento de Reflection não fosse necessário. Mas para casos mais complexos você pode precisar de Reflection, por isso, aqui está o link do curso de reflection aqui na Alura:
+            // Curso de 'Metaprogramação com PHP: API de Reflection': https://cursos.alura.com.br/course/metaprogramacao-php-api-reflection
+    $controller = new $controllerClass($repository);
+} elseif ($_SERVER['PATH_INFO'] === '/sobre-mvc') {
+    require_once __DIR__ . '/../views/sobre-mvc.php';
 } else {
-    // echo $path = __DIR__.'/../404.html';
-    // exit();
-    // require_once 'pages/404.php';
-    // $path = __DIR__.'/pages/404.php';
-    // header("Location: $path");
-    // $path2 = __DIR__.'/../404.php';
-    // header("Location: $path2");
-    // require_once __DIR__.'/../404.php';
-    // exit();
-    http_response_code(404);
+    $controller = new Error404Controller();
 }
+
+/**
+ * @var Controller $controller;
+ */
+$controller->processRequest();
+
+// ------------------------------------
+
+// Antes de termos o arquivo routes.php:
+// if (!array_key_exists('PATH_INFO', $_SERVER) || $_SERVER['PATH_INFO'] === '/') {
+//     $controller = new VideoListController($repository);
+//     // $controller->processRequest();
+// } elseif ($_SERVER['PATH_INFO'] === '/novo-video') {
+//     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+//         $controller = new VideoFormController($repository);
+//         // $controller->processRequest();
+//     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//         $controller = new NewVideoController($repository);
+//         // $controller->processRequest();
+//         // require_once __DIR__.'/../novo-video.php';
+//     }
+// } elseif ($_SERVER['PATH_INFO'] === '/edita-video') {
+//     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+//         $controller = new VideoFormController($repository);
+//         // $controller->processRequest();
+//     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//         $controller = new EditVideoController($repository);
+//         // $controller->processRequest();
+//         // require_once __DIR__.'/../edita-video.php';
+//     }
+// } elseif ($_SERVER['PATH_INFO'] === '/remover-video') {
+//     $controller = new DeleteVideoController($repository);
+//     // $controller->processRequest();
+//     // require_once __DIR__.'/../remover-video.php';
+// } elseif ($_SERVER['PATH_INFO'] === '/sobre-mvc') {
+//     require_once __DIR__.'/../views/sobre-mvc.php';
+// } else {
+//     $controller = new Error404Controller();
+//     // $controller->processRequest();
+//     // http_response_code(404);
+// }
+// /**
+//  * @var Controller $controller;
+//  */
+// $controller->processRequest(); // *NOTA: Como todos os controlles tem uma função com mesmo nome 'processRequest()'. Podemos chamar ela apenas uma vez! fora do if <3

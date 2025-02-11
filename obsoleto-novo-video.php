@@ -15,7 +15,6 @@ $title = filter_input(INPUT_POST, 'titulo');
     // Normalmente os framworkes já faz isso por baixo dos panos pra gente.
     // Se quisermos usar filtros em variaveis, basta ao invez de usar o 'filter_input', usamos o 'filter_var'(filter_input não usa o parametro de INPUT_POST)!
 
-
 if ($url === false || $title === false) {
     header('location: /?sucesso=0');
     exit();
