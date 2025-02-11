@@ -40,8 +40,8 @@ $videoList = $repository->allVideos();
                         <img src="./img/logo.png" alt="logo canal alura">
                         <h3><?= $video->title ?></h3>
                         <div class="acoes-video">
-                            <a href="/edita-video?id=<?= $video->id ?>">Editar</a>
-                            <a href="/remover-video?id=<?= $video->id ?>">Excluir</a>
+                            <a href="/edita-video?id=<?= $video->id ?>">Editar(Obsoleto)</a>
+                            <a href="/remover-video?id=<?= $video->id ?>">Excluir(Obsoleto)</a>
                         </div>
                     </div>
                 </li>

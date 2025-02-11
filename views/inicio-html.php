@@ -19,7 +19,8 @@
 
             <div class="cabecalho__icones">
                 <a href="/novo-video" class="cabecalho__videos"></a>
-                <a href="/pages/login.html" class="cabecalho__sair">Sair</a>
+                <a href="/sobre-mvc" class="cabecalho__sair">Sobre o MVC</a>
+                <a href="/login.php" class="cabecalho__sair">Sair</a>
             </div>
         </nav>
     </header>
