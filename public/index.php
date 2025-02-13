@@ -25,6 +25,14 @@ $routes = require_once __DIR__ . '/../config/routes.php';
 $pathInfo = $_SERVER['PATH_INFO'] ?? '/';
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 
+// session start. Esta função verifica se foi enviado algum Cookie, e caso não, ela gera um Cookie, cria uma pasta e o envia o Cookie para o navegador do cliente.
+session_start();
+$isLoginRoute = $pathInfo === '/login';
+if (!array_key_exists('logado', $_SESSION) && !$isLoginRoute) {
+    header('Location: /login');
+    return;
+}
+
 $key = "$httpMethod|$pathInfo";
 
 if (array_key_exists($key, $routes)) {
