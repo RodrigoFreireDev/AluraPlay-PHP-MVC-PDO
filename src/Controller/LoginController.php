@@ -27,10 +27,27 @@ class LoginController implements Controller
 
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // >>>>> Anti Timing Attack: ----------------------------------
+        // Criamo uma senha errada, para se caso o user não exista, o tempo de execução seja semelhamte ao quando existir pelo 'password_verify()'!
+        $storedPassword = password_hash(' ', PASSWORD_ARGON2I);
+        
+        if ($userData) {
+            $storedPassword = $userData['password'];
+        }
+        // >>>>> Anti Timing Attack: ----------------------------------
+
         // password_verify: Para comparar uma senha com o hash de senha armazenado no banco de dados, usamos a função password_verify(). Esta função 
         // verifica o algoritmo usado, qual o vetor de inicialização, e analisa o processamento e, com isso, ela realiza a verificação.
             // Essa verificação é feita em 'TEMPO CONSTANTE'(Termo) que é algo importante na area de segurança!
-        $correctPassword = password_verify($password, $userData['password'] ?? ''); // ?? '': Se não existir, mande uma string vazia.
+        $correctPassword = password_verify($password, $storedPassword ?? ''); // ?? '': Se não existir, mande uma string vazia.
+
+        // password_needs_rehash($userData['password'], PASSWORD_ARGON2I) // : bool se a senha usa ou não a tecnologia de criptografia especificada(True se precisa e False se não precisa)!
+        if (password_needs_rehash($userData['password'], PASSWORD_ARGON2I)) {
+            $stmt = $this->pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
+            $stmt->bindValue(1, password_hash($password, PASSWORD_ARGON2I));
+            $stmt->bindValue(2, $userData['id']);
+            $stmt->execute();
+        }
 
         if ($correctPassword) {
             // Queremos informar que logado é igual a true ("verdadeiro"). Para armazenar isso, podemos usar uma super global do PHP chamada $_SESSION.
