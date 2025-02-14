@@ -40,4 +40,29 @@ class Video
     {
         $this->filePath = $filePath;
     }
+
+    function gerarSlug($nomeArquivo): string
+    {
+        // Separar o nome da extensão
+        $extensao = pathinfo($nomeArquivo, PATHINFO_EXTENSION);
+        $nomeBase = pathinfo($nomeArquivo, PATHINFO_FILENAME);
+        
+        // 1. Converter para minúsculas
+        $slug = strtolower($nomeBase);
+        
+        // 2. Substituir espaços e traços múltiplos por um único traço
+        $slug = preg_replace('/[\s-]+/', '-', $slug);
+        
+        // 3. Remover acentos
+        $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $slug);
+        
+        // 4. Remover caracteres que não sejam letras, números ou hifens
+        $slug = preg_replace('/[^a-z0-9\-]/', '', $slug);
+        
+        // 5. Garantir que não haja traços no início ou final
+        $slug = trim($slug, '-');
+    
+        // Retornar o slug concatenado com a extensão original
+        return $slug . '.' . $extensao;
+    }
 }

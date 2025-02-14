@@ -27,6 +27,14 @@ $httpMethod = $_SERVER['REQUEST_METHOD'];
 
 // session start. Esta função verifica se foi enviado algum Cookie, e caso não, ela gera um Cookie, cria uma pasta e o envia o Cookie para o navegador do cliente.
 session_start();
+//'session_regenerate_id();' // Acada nova requisição(login) é gerado um ID diferente e não mais o mesmo como antes! Deixando mais seguro o processo de login.
+if (isset($_SESSION['logado'])) {
+    $originalInfo = $_SESSION['logado'];
+    unset($_SESSION['logado']);
+    session_regenerate_id();
+    $_SESSION['logado'] = $originalInfo;
+}
+
 $isLoginRoute = $pathInfo === '/login';
 if (!array_key_exists('logado', $_SESSION) && !$isLoginRoute) {
     header('Location: /login');
