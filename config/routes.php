@@ -2,9 +2,11 @@
 
 use Alura\Mvc\Controller\DeleteVideoController;
 use Alura\Mvc\Controller\EditVideoController;
+use Alura\Mvc\Controller\JsonVideoListController;
 use Alura\Mvc\Controller\LoginController;
 use Alura\Mvc\Controller\LoginFormController;
 use Alura\Mvc\Controller\LogoutController;
+use Alura\Mvc\Controller\NewJsonVideoController;
 use Alura\Mvc\Controller\NewVideoController;
 use Alura\Mvc\Controller\ThumbnailRemoverConrtoller;
 use Alura\Mvc\Controller\VideoFormController;
@@ -21,4 +23,6 @@ return [
     'POST|/login' => LoginController::class,
     'GET|/logout' => LogoutController::class,
     'GET|/remover-capa' => ThumbnailRemoverConrtoller::class,
+    'GET|/videos-json' => JsonVideoListController::class,
+    'POST|/videos' => NewJsonVideoController::class,
 ];
