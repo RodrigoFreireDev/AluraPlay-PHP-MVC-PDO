@@ -11,6 +11,6 @@ class LoginFormController extends ViewsController
             return;
         }
 
-        $this->rederTemplate('login-form');
+        echo $this->rederTemplate('login-form');
     }
 }

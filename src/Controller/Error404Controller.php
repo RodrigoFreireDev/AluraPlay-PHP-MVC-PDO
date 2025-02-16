@@ -8,6 +8,6 @@ class Error404Controller extends ViewsController
 {
     public function processRequest(): void
     {
-        $this->rederTemplate('404-html');
+        echo $this->rederTemplate('404-html');
     }
 }

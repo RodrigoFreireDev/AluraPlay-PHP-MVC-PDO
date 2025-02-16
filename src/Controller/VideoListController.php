@@ -15,7 +15,7 @@ class VideoListController extends ViewsController
     {
         $videoList = $this->videoRepository->allVideos();
 
-        $this->rederTemplate(
+        echo $this->rederTemplate(
             'video-list',
             ['videoList' => $videoList]
         );
