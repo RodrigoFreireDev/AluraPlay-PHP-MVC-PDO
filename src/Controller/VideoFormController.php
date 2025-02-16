@@ -23,7 +23,7 @@ class VideoFormController extends ViewsController
             $video = $this->videoRepository->videoById($id);
         }
 
-        $this->rederTemplate(
+        echo $this->rederTemplate(
             'video-form',
             ['video' => $video]
     );
