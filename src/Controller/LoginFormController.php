@@ -2,7 +2,7 @@
 
 namespace Alura\Mvc\Controller;
 
-class LoginFormController implements Controller
+class LoginFormController extends ViewsController
 {
     public function processRequest(): void
     {
@@ -10,6 +10,7 @@ class LoginFormController implements Controller
             header('Location: /');
             return;
         }
-        require_once __DIR__ . '/../../views/login-form.php';
+
+        $this->rederTemplate('login-form');
     }
 }

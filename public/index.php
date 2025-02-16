@@ -45,15 +45,12 @@ $key = "$httpMethod|$pathInfo";
 
 if (array_key_exists($key, $routes)) {
     $controllerClass = $routes["$httpMethod|$pathInfo"];
-
     // Como foi possível instanciar um objeto de uma classe('$controller = new $controllerClass($repository);') a partir de uma string com o nome dessa classe?
         // Instanciando diretamente pelo valor da variável!
             // Sobre:
             // O PHP permite que nós utilizemos uma variável como o nome da classe que queremos instanciar, como new $nomeDaClasse();. Isso facilitou nossa vida fazendo com que o conhecimento de Reflection não fosse necessário. Mas para casos mais complexos você pode precisar de Reflection, por isso, aqui está o link do curso de reflection aqui na Alura:
             // Curso de 'Metaprogramação com PHP: API de Reflection': https://cursos.alura.com.br/course/metaprogramacao-php-api-reflection
     $controller = new $controllerClass($repository);
-} elseif ($_SERVER['PATH_INFO'] === '/sobre-mvc') {
-    require_once __DIR__ . '/../views/sobre-mvc.php';
 } else {
     $controller = new Error404Controller();
 }

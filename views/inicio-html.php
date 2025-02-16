@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/estilos.css">
     <link rel="stylesheet" href="./css/estilos-form.css">
+    <link rel="stylesheet" href="./css/estilos-404.css">
+    <link rel="stylesheet" href="./css/estilo-about-mvc.css">
     <link rel="stylesheet" href="./css/flexbox.css">
     <title>AluraPlay</title>
     <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
