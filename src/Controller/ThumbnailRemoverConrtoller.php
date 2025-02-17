@@ -4,8 +4,12 @@ namespace Alura\Mvc\Controller;
 
 use Alura\Mvc\Helper\FlashMessageTrait;
 use Alura\Mvc\Repository\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ThumbnailRemoverConrtoller implements Controller
+class ThumbnailRemoverConrtoller implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
@@ -14,23 +18,27 @@ class ThumbnailRemoverConrtoller implements Controller
         
     }
 
-    public function processRequest(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $QueryParams = $request->getQueryParams();
+        $id = filter_var($QueryParams['id'], FILTER_VALIDATE_INT);
 
         if ($id === false || $id === null) {
             $this->addErrorMessage('Erro na remoção de Thumbnail!');
-            header('Location: /');
-            exit();
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
 
         if ($this->videoRepository->thumbnailRemover($id) === true) {
-            header('Location: /?sucesso=1');
-            exit();
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         } else {
             $this->addErrorMessage('Erro na remoção de Thumbnail!');
-            header('Location: /');
-            exit();
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
     }
 }

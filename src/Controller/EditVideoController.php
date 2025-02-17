@@ -5,8 +5,12 @@ namespace Alura\Mvc\Controller;
 use Alura\Mvc\Entity\Video;
 use Alura\Mvc\Helper\FlashMessageTrait;
 use Alura\Mvc\Repository\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class EditVideoController implements Controller
+class EditVideoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
@@ -15,23 +19,32 @@ class EditVideoController implements Controller
         // $this->videoRepository = $videoRepository;
     }
 
-    public function processRequest(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
-        $title = filter_input(INPUT_POST, 'titulo');
+        // $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        // $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
+        // $title = filter_input(INPUT_POST, 'titulo');
+        
+        $queryParams = $request->getQueryParams(); // Essa linha é como um $_GET
+        $id = filter_var($queryParams['id'], FILTER_VALIDATE_INT);
+
+        $ParsedBody = $request->getParsedBody(); // Essa linha é como um $_POST
+        $url = filter_var($ParsedBody['url'], FILTER_VALIDATE_URL);
+        $title = filter_var($ParsedBody['titulo']);
 
 
         if ($url === false || $title === false) {
             $this->addErrorMessage('Dados Invalidos!');
-            header('Location: /');
-            exit();
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
 
         if ($id === false || $id === null) {
             $this->addErrorMessage('Dados Invalidos!');
-            header('Location: /');
-            exit();
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
 
         $video = new Video($url, $title);
@@ -56,12 +69,14 @@ class EditVideoController implements Controller
         }
 
         if ($this->videoRepository->updateVideo($video) === true) {
-            header('Location: /?sucesso=1');
-            exit();
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         } else {
             $this->addErrorMessage('Erro na edição!');
-            header('Location: /');
-            exit();
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
     }
 }

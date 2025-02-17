@@ -30,15 +30,15 @@ class Video
     {
         $this->id = $id;
     }
-
-    public function getFilePath(): ?string
-    {
-        return $this->filePath;
-    }
     
     public function setFilePath(string $filePath): void
     {
         $this->filePath = $filePath;
+    }
+    
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
     }
 
     function gerarSlug($nomeArquivo): string

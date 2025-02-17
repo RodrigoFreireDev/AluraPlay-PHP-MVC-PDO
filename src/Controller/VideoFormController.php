@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Alura\Mvc\Controller;
 
 use Alura\Mvc\Helper\HtmlRendereTrait;
 use Alura\Mvc\Repository\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class VideoFormController implements Controller
+class VideoFormController implements RequestHandlerInterface
 {
     use HtmlRendereTrait;
 
@@ -14,21 +20,23 @@ class VideoFormController implements Controller
         // $this->videoRepository = $videoRepository;
     }
 
-    public function processRequest(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // $action = "/../../../../novo-video";
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $queryParams = $request->getQueryParams();
+        $id = filter_var($queryParams['id'], FILTER_VALIDATE_INT);
 
+        /** @var ?Video $video */
         $video = null;
 
-        if (isset($id)) {
+        if ($id !== false && $id !== null) {
             // $action = "/../../../../edita-video?id=".$id;
             $video = $this->videoRepository->videoById($id);
         }
 
-        echo $this->rederTemplate(
+        return new Response(200, body: $this->rederTemplate(
             'video-form',
             ['video' => $video]
-    );
+        ));
     }
 }
