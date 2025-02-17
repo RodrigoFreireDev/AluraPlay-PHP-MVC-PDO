@@ -3,8 +3,12 @@
 
 namespace Alura\Mvc\Controller;
 
-class AboutMvcController extends ViewsController
+use Alura\Mvc\Helper\HtmlRendereTrait;
+
+class AboutMvcController implements Controller
 {
+    use HtmlRendereTrait;
+
     public function processRequest(): void
     {
         echo $this->rederTemplate('about-mvc');

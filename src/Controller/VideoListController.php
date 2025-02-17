@@ -2,10 +2,13 @@
 
 namespace Alura\Mvc\Controller;
 
+use Alura\Mvc\Helper\HtmlRendereTrait;
 use Alura\Mvc\Repository\VideoRepository;
 
-class VideoListController extends ViewsController
+class VideoListController implements Controller
 {
+    use HtmlRendereTrait;
+
     public function __construct(private VideoRepository $videoRepository)
     {
         // $this->videoRepository = $videoRepository;
