@@ -2,8 +2,12 @@
 
 namespace Alura\Mvc\Controller;
 
-class LoginFormController extends ViewsController
+use Alura\Mvc\Helper\HtmlRendereTrait;
+
+class LoginFormController implements Controller
 {
+    use HtmlRendereTrait;
+
     public function processRequest(): void
     {
         if (array_key_exists('logado', $_SESSION) && $_SESSION['logado'] === true) {

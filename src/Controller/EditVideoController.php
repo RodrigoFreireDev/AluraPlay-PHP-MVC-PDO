@@ -3,10 +3,13 @@
 namespace Alura\Mvc\Controller;
 
 use Alura\Mvc\Entity\Video;
+use Alura\Mvc\Helper\FlashMessageTrait;
 use Alura\Mvc\Repository\VideoRepository;
 
 class EditVideoController implements Controller
 {
+    use FlashMessageTrait;
+
     public function __construct(private VideoRepository $videoRepository)
     {
         // $this->videoRepository = $videoRepository;
@@ -20,12 +23,14 @@ class EditVideoController implements Controller
 
 
         if ($url === false || $title === false) {
-            header('location: /?sucesso=0');
+            $this->addErrorMessage('Dados Invalidos!');
+            header('Location: /');
             exit();
         }
 
         if ($id === false || $id === null) {
-            header('location: /?sucesso=0');
+            $this->addErrorMessage('Dados Invalidos!');
+            header('Location: /');
             exit();
         }
 
@@ -54,7 +59,8 @@ class EditVideoController implements Controller
             header('Location: /?sucesso=1');
             exit();
         } else {
-            header('Location: /?sucesso=0');
+            $this->addErrorMessage('Erro na edição!');
+            header('Location: /');
             exit();
         }
     }

@@ -2,10 +2,13 @@
 
 namespace Alura\Mvc\Controller;
 
+use Alura\Mvc\Helper\FlashMessageTrait;
 use Alura\Mvc\Repository\VideoRepository;
 
 class ThumbnailRemoverConrtoller implements Controller
 {
+    use FlashMessageTrait;
+
     public function __construct(private VideoRepository $videoRepository)
     {
         
@@ -16,7 +19,8 @@ class ThumbnailRemoverConrtoller implements Controller
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
         if ($id === false || $id === null) {
-            header('Location: /?sucesso=0');
+            $this->addErrorMessage('Erro na remoção de Thumbnail!');
+            header('Location: /');
             exit();
         }
 
@@ -24,7 +28,8 @@ class ThumbnailRemoverConrtoller implements Controller
             header('Location: /?sucesso=1');
             exit();
         } else {
-            header('Location: /?sucesso=0');
+            $this->addErrorMessage('Erro na remoção de Thumbnail!');
+            header('Location: /');
             exit();
         }
     }
