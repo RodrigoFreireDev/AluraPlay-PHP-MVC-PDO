@@ -3,16 +3,12 @@
 // Vantagem do 'Front Contoller': Com ele, só precisamos usar o autoloader uma vez. No caso nesse arquivo.
 declare(strict_types=1);
 
-use Alura\Mvc\Controller\{
-    Controller,
-    EditVideoController,
-    VideoFormController,
-    NewVideoController,
-    Error404Controller,
-    DeleteVideoController,
-    VideoListController,
-};
+use Alura\Mvc\Controller\Error404Controller;
 use Alura\Mvc\Repository\VideoRepository;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../src/conexao.php';
@@ -21,6 +17,9 @@ $repository = new VideoRepository($pdo);
 
 // Depois de termos o arquivo routes.php:
 $routes = require_once __DIR__ . '/../config/routes.php';
+
+/** @var ContainerInterface $diContainer */
+$diContainer = require_once __DIR__ . '/../config/dependencies.php'; 
 
 $pathInfo = $_SERVER['PATH_INFO'] ?? '/';
 $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -50,15 +49,34 @@ if (array_key_exists($key, $routes)) {
             // Sobre:
             // O PHP permite que nós utilizemos uma variável como o nome da classe que queremos instanciar, como new $nomeDaClasse();. Isso facilitou nossa vida fazendo com que o conhecimento de Reflection não fosse necessário. Mas para casos mais complexos você pode precisar de Reflection, por isso, aqui está o link do curso de reflection aqui na Alura:
             // Curso de 'Metaprogramação com PHP: API de Reflection': https://cursos.alura.com.br/course/metaprogramacao-php-api-reflection
-    $controller = new $controllerClass($repository);
+    // $controller = new $controllerClass($repository); // Antes
+    $controller = $diContainer->get($controllerClass);
 } else {
     $controller = new Error404Controller();
 }
 
-/**
- * @var Controller $controller;
- */
-$controller->processRequest();
+$psr17Factory = new Psr17Factory;
+
+$creator = new ServerRequestCreator(
+    $psr17Factory, // ServerRequestFactory
+    $psr17Factory, // UriFactory
+    $psr17Factory, // UploadedFileFactory
+    $psr17Factory  // StreamFactory
+);
+
+$request = $creator->fromGlobals();
+
+/** @var RequestHandlerInterface $controller */
+$response = $controller->handle($request);
+
+http_response_code($response->getStatusCode());
+foreach ($response->getHeaders() as $name => $values) {
+    foreach ($values as $value) {  
+        header (sprintf('%s: %s', $name, $value), false);
+    }
+}
+
+echo $response->getBody();
 
 // ------------------------------------
 

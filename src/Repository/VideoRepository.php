@@ -95,7 +95,28 @@ class VideoRepository
         );
     }
 
-    public function videoById(int $id): Video
+    // public function videoById(int $id)
+    // {
+    //     $sql = 'SELECT * FROM videos WHERE id = ?;';
+    //     $stmt = $this->pdo->prepare($sql);
+    //     $stmt->bindValue(1, $id);
+    //     $stmt->execute();
+
+    //     return $this->hydrateVideo($stmt->fetch(\PDO::FETCH_ASSOC));
+    // }
+
+    // private function hydrateVideo(array $videoData): Video
+    // {
+    //     $video = new Video($videoData['url'], $videoData['title']);
+    //     $video->setId($videoData['id']);
+
+    //     if ($videoData['image_path'] !== null) {
+    //         $video->setFilePath($videoData['image_path']);
+    //     }
+
+    //     return $video;
+    // }
+    public function videoById(int $id)
     {
         $sql = 'SELECT * FROM videos WHERE id = ?;';
         $stmt = $this->pdo->prepare($sql);

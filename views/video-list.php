@@ -6,9 +6,11 @@ require_once __DIR__ . '/inicio-html.php';
 ?>
 <ul class="videos__container" alt="videos alura">
     <?php foreach ($videoList as $video) { ?>
-        <?php if (!str_starts_with($video->url, 'http')) {
-            $video->setUrl('https://www.svgrepo.com/show/349637/trash.svg');
-        } ?>
+        <?php 
+            // if (!str_starts_with($video->url, 'http')) {
+            //     $video->setUrl('https://www.svgrepo.com/show/349637/trash.svg');
+            // }
+        ?>
         <li class="videos__item">
             <?php if ($video->getFilePath() !== null): ?>
                 <a href="<?= $video->url ?>">
