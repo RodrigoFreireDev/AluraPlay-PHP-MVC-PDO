@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/inicio-html.php';
+$this->layout('layout');
 // Indica que essa var existe sim. Alem de tipo e que pode ser null
 //** @var ?\Alura\Mvc\Entity\Video $video */
 // OU mais 'explicito'
@@ -41,7 +41,3 @@ require __DIR__ . '/inicio-html.php';
     </form>
 
 </main>
-
-<?php
-
-require_once __DIR__ . '/inicio-html.php';

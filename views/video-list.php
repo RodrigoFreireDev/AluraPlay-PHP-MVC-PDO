@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . '/inicio-html.php';
+$this->layout('layout');
+// $this->insert('/inicio-html');
 // Indica que essa var existe sim e o tipo dela.
 /**@var Alura\Mvc\Entity\Video[] $videoList */
 ?>
@@ -34,6 +35,3 @@ require_once __DIR__ . '/inicio-html.php';
         </li>
     <?php } ?>
 </ul>
-<?php
-
-require_once __DIR__ . '/fim-html.php';

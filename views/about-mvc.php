@@ -1,4 +1,4 @@
-<?php require_once __DIR__.'/inicio-html.php'; ?>
+<?php $this->layout('layout'); ?>
 
 <div class="container-about">
     <h1>O que é MVC?</h1>
@@ -79,5 +79,4 @@ class Model {
 
         <a href="https://cursos.alura.com.br/course/php-introducao-clean-achitecture" target="_blank">PHP e Clean Architecture: descomplicando arquitetura de software</a>
         </div>
-<?php require_once __DIR__.'/fim-html.php';
         
