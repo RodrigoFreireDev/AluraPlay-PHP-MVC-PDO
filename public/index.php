@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 use Alura\Mvc\Controller\Error404Controller;
 use Alura\Mvc\Repository\VideoRepository;
+use League\Plates\Engine;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Psr\Container\ContainerInterface;
@@ -14,6 +15,7 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../src/conexao.php';
 
 $repository = new VideoRepository($pdo);
+$template = new Engine();
 
 // Depois de termos o arquivo routes.php:
 $routes = require_once __DIR__ . '/../config/routes.php';

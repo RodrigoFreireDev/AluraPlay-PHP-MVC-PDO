@@ -1,5 +1,4 @@
-<?php require_once __DIR__ . '/inicio-html.php'; ?>
-
+<?php $this->layout('layout'); ?>
     <div class="container-404">
         <div class="div-404">
             <h1 class="animation">404</h1>
@@ -8,5 +7,3 @@
             <a href="/" class="btn">Voltar para a Home</a>
         </div>
     </div>
-
-<?php require_once __DIR__ . '/fim-html.php';
