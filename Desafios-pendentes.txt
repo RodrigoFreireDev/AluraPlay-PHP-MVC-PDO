@@ -1,3 +1,4 @@
 
 1. Criar o userRepository e instancilo por injeção de dependencia.
-2. ?
+2. Corrigir erro pagina 404?
+3. 
