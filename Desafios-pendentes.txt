@@ -1,4 +1,4 @@
 
-1. Criar o userRepository e instancilo por injeção de dependencia.
-2. Corrigir erro pagina 404?
+1. Criar o userRepository e instancilo por injeção de dependencia. -> Status: Não Feito
+2. Corrigir erro pagina 404? -> Status: Feito
 3. 
